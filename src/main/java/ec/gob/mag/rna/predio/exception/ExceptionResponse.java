@@ -10,18 +10,14 @@ public class ExceptionResponse {
 	private String message;
 	private String details;
 	private String detailsJson;
-	
-	
-	
-	public ExceptionResponse(HttpStatus status, Date timestamp, String message, String details, String detailsJson) {
 
+	public ExceptionResponse(HttpStatus status, Date timestamp, String message, String details, String detailsJson) {
 		this.status = status;
 		this.timestamp = timestamp;
 		this.message = message;
 		this.details = details;
 		this.detailsJson = detailsJson;
 	}
-
 
 	public HttpStatus getStatus() {
 		return status;
@@ -35,29 +31,32 @@ public class ExceptionResponse {
 		return detailsJson;
 	}
 
-
 	public void setDetailsJson(String detailsJson) {
 		this.detailsJson = detailsJson;
 	}
 
-
 	public Date getTimestamp() {
 		return timestamp;
 	}
+
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
+
 	public String getMessage() {
 		return message;
 	}
+
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
 	public String getDetails() {
 		return details;
 	}
+
 	public void setDetails(String details) {
 		this.details = details;
 	}
-	
+
 }
