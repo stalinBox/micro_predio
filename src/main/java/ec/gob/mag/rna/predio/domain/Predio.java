@@ -6,7 +6,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Id;
 
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +35,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.extern.log4j.Log4j;
 
 //============== LOMBOK =============
 @Getter
@@ -46,7 +44,6 @@ import lombok.extern.log4j.Log4j;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Log4j
 //========== JPA ======================
 @Entity
 @Table(name = "predio", schema = "sc_agricola")
@@ -341,7 +338,7 @@ public class Predio implements java.io.Serializable {
 	@Fetch(value = FetchMode.JOIN)
 	@JsonProperty("coordenadas")
 	@JsonInclude(Include.NON_NULL)
-	private Set<Coordenada> coordenadas = new HashSet<>();
+	private Set<Coordenada> coordenadas;
 
 	@Fetch(value = FetchMode.JOIN)
 	@ApiModelProperty(value = "Campo areaCultivos Mapeado por predio", position = 46)
@@ -349,7 +346,7 @@ public class Predio implements java.io.Serializable {
 			CascadeType.REFRESH })
 	@JsonProperty("areaCultivos")
 	@JsonInclude(Include.NON_NULL)
-	private Set<AreaCultivo> areaCultivos = new HashSet<>();
+	private Set<AreaCultivo> areaCultivos;
 
 	@ApiModelProperty(value = "Campo coberturas Mapeado por predio", position = 47)
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "predio", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
@@ -357,7 +354,7 @@ public class Predio implements java.io.Serializable {
 	@Fetch(value = FetchMode.JOIN)
 	@JsonProperty("coberturas")
 	@JsonInclude(Include.NON_NULL)
-	private Set<Cobertura> coberturas = new HashSet<>();
+	private Set<Cobertura> coberturas;
 
 	@PrePersist
 	public void prePersist() {

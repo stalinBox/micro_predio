@@ -1,15 +1,11 @@
 package ec.gob.mag.rna.predio.exception;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +16,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.converter.json.JsonbHttpMessageConverter;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,15 +23,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import ec.gob.mag.rna.predio.util.Util;
-
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 
 @ControllerAdvice
 @RestController
@@ -47,6 +35,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	private MessageSource messageSource;
 	private final static Logger LOGGER = LoggerFactory.getLogger(CustomizedResponseEntityExceptionHandler.class);
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> handleAllException(Exception ex, WebRequest request) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR, new Date(),
@@ -55,16 +44,17 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public final ResponseEntity<Object> handleConstraintDataIntegrityViolationException(Exception ex,
 			WebRequest request) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.BAD_REQUEST, new Date(),
 				messageSource.getMessage("error.constraint_validation.message", null, LocaleContextHolder.getLocale()),
 				request.getDescription(false), null);
-
 		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ExceptionHandler(PersistenceException.class)
 	public final ResponseEntity<Object> handlePersistenceException(Exception ex, WebRequest request) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND, new Date(),
@@ -73,6 +63,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ExceptionHandler(IllegalArgumentException.class)
 	public final ResponseEntity<Object> handleIllegalArgumentException(Exception ex, WebRequest request) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR, new Date(),
@@ -81,14 +72,15 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ExceptionHandler(PredioNotFoundException.class)
 	public final ResponseEntity<Object> handleOfficerNotFoundException(Exception ex, WebRequest request) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.NOT_FOUND, new Date(), ex.getMessage(),
 				request.getDescription(false), null);
 		return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
-
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ExceptionHandler(com.fasterxml.jackson.core.JsonParseException.class)
 	public final ResponseEntity<Object> handleJsonParseException(Exception ex, WebRequest request) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR, new Date(),
@@ -98,14 +90,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 
 		BindingResult result = ex.getBindingResult();
 		List<FieldError> fieldErrors = result.getFieldErrors();
-		StringBuilder errorMessage = new StringBuilder();
-
 		String messageDetail = "error:{";
 
 		int sizeFieldError = fieldErrors.size();
@@ -121,7 +112,6 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 				String msg = msgArr[0];
 				if (msgList.get(0).startsWith("_")) {
 					msg = messageSource.getMessage(msgList.get(0), null, LocaleContextHolder.getLocale());
-					StringBuilder errorMessageR = new StringBuilder();
 					msgList = new ArrayList(Arrays.asList(msg.split("%s")));
 					msg = "";
 					int k = 0;
@@ -136,7 +126,6 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 				}
 				msg = Util.cleanBlanks(msg);
-
 				messageDetail = messageDetail + f.getField() + " : " + msg + (it == (sizeFieldError - 1) ? "" : ",");
 				LOGGER.info("Validation message ready");
 			} catch (Exception ex1) {

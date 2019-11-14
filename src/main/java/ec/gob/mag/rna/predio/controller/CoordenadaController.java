@@ -5,8 +5,6 @@ import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,50 +24,41 @@ import io.swagger.annotations.ApiResponse;
 @RestController
 @RequestMapping("/api")
 @Api(value = "MicroservicioCoordenada", description = "Rest Api example", tags = "COORDENADA")
-@ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Objeto recuperado"),
-        @ApiResponse(code = 201, message = "Objeto creado"),
-        @ApiResponse(code = 404, message = "Recurso no encontrado")
-})
+@ApiResponses(value = { @ApiResponse(code = 200, message = "Objeto recuperado"),
+		@ApiResponse(code = 201, message = "Objeto creado"),
+		@ApiResponse(code = 404, message = "Recurso no encontrado") })
 public class CoordenadaController {
-
-	// @Autowired
-	//OfficerService OfficerService = new OfficerService();
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(CoordenadaController.class);
 	@Autowired
 	@Qualifier("coordenadaService")
 	private CoordenadaService coordenadaService;
-	@Autowired
-	private MessageSource messageSource;
 
-	
 	@RequestMapping(value = "/create_coordenada", method = RequestMethod.POST)
 	@ApiOperation(value = "Insert coordenada", response = Long.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Long createdCoordenada(@Valid @RequestBody  Coordenada coordenada)  {
+	public Long createdCoordenada(@Valid @RequestBody Coordenada coordenada) {
 		Coordenada coordenadaR = coordenadaService.save(coordenada);
-		LOGGER.info("createdCoordenada: "+coordenadaR.toString());
-		return coordenadaR.getCordId();		
+		LOGGER.info("createdCoordenada: " + coordenadaR.toString());
+		return coordenadaR.getCordId();
 	}
-	
-	
+
 	@RequestMapping(value = "/coordenada/find", method = RequestMethod.GET)
-	@ApiOperation( value = "Busca todas las coordenadas", response = Coordenada.class )
+	@ApiOperation(value = "Busca todas las coordenadas", response = Coordenada.class)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Coordenada> getCoordenadas() {
-		List<Coordenada>listCoordenadas = coordenadaService.findAll();
+		List<Coordenada> listCoordenadas = coordenadaService.findAll();
 		LOGGER.info("getCoordenadas: " + listCoordenadas.toString());
 		return listCoordenadas;
-		
 	}
+
 	@RequestMapping(value = "/coordenada/find/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca una coordenada por id", response = Coordenada.class)
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Coordenada> getCoordenadaById( @Valid @PathVariable String id ) {
-		Optional<Coordenada> coordenada = coordenadaService.findByCobId( Long.parseLong( id ) );
-		LOGGER.info("getCoordenadaById: "+ coordenada.toString());
+	public Optional<Coordenada> getCoordenadaById(@Valid @PathVariable String id) {
+		Optional<Coordenada> coordenada = coordenadaService.findByCobId(Long.parseLong(id));
+		LOGGER.info("getCoordenadaById: " + coordenada.toString());
 		return coordenada;
-		
+
 	}
 }

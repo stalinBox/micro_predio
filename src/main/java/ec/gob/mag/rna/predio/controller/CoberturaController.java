@@ -5,8 +5,6 @@ import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,53 +24,43 @@ import io.swagger.annotations.ApiResponse;
 @RestController
 @RequestMapping("/api")
 @Api(value = "MicroservicioCobertura", description = "Rest Api example", tags = "COBERTURA")
-@ApiResponses(value = {
-        @ApiResponse(code = 200, message = "Objeto recuperado"),
-        @ApiResponse(code = 201, message = "Objeto creado"),
-        @ApiResponse(code = 404, message = "Recurso no encontrado")
-})
-public class CoberturaController  {
-
-	// @Autowired
-	//OfficerService OfficerService = new OfficerService();
+@ApiResponses(value = { @ApiResponse(code = 200, message = "Objeto recuperado"),
+		@ApiResponse(code = 201, message = "Objeto creado"),
+		@ApiResponse(code = 404, message = "Recurso no encontrado") })
+public class CoberturaController {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(CoberturaController.class);
 	@Autowired
 	@Qualifier("coberturaService")
 	private CoberturaService coberturaService;
-	@Autowired
-	private MessageSource messageSource;
 
-	
 	@RequestMapping(value = "/create_cobertura", method = RequestMethod.POST)
 	@ApiOperation(value = "Crea una nueva cobertura", response = Long.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Long createCobertura(@Valid @RequestBody  Cobertura cobertura)  {
-		Cobertura coberturaR =coberturaService.save(cobertura);
-		LOGGER.info("createCobertura: "+coberturaR.toString());
-		return coberturaR.getCobId();		
+	public Long createCobertura(@Valid @RequestBody Cobertura cobertura) {
+		Cobertura coberturaR = coberturaService.save(cobertura);
+		LOGGER.info("createCobertura: " + coberturaR.toString());
+		return coberturaR.getCobId();
 	}
-	
-	
+
 	@RequestMapping(value = "/cobertura/find", method = RequestMethod.GET)
-	@ApiOperation( value = "Busca todas las coberturas", response = Cobertura.class )
+	@ApiOperation(value = "Busca todas las coberturas", response = Cobertura.class)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Cobertura> getCoberturas() {
-		List<Cobertura>listCoberturas = (List<Cobertura>)coberturaService.findAll();
+		List<Cobertura> listCoberturas = (List<Cobertura>) coberturaService.findAll();
 		LOGGER.info("getCoberturas: " + listCoberturas.toString());
 		return listCoberturas;
-		
+
 	}
-	
+
 	@RequestMapping(value = "/cobertura/find/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca una cobertura por id", response = Cobertura.class)
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Cobertura> getCoberturaById( @Valid @PathVariable String id ) {
-		Optional<Cobertura> cobertura = coberturaService.findByCobId( Long.parseLong( id ) );
-		LOGGER.info("getCoberturaById: "+ cobertura.toString());
+	public Optional<Cobertura> getCoberturaById(@Valid @PathVariable String id) {
+		Optional<Cobertura> cobertura = coberturaService.findByCobId(Long.parseLong(id));
+		LOGGER.info("getCoberturaById: " + cobertura.toString());
 		return cobertura;
-		
+
 	}
-	
 
 }
