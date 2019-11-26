@@ -14,16 +14,60 @@ import ec.gob.mag.rna.predio.domain.AreaCultivo;
 import ec.gob.mag.rna.predio.domain.Cobertura;
 import ec.gob.mag.rna.predio.domain.Coordenada;
 import ec.gob.mag.rna.predio.domain.Predio;
+import ec.gob.mag.rna.predio.domain.Ubicacion;
 import ec.gob.mag.rna.predio.exception.PredioNotFoundException;
 import ec.gob.mag.rna.predio.repository.PredioRepository;
+import ec.gob.mag.rna.predio.repository.UbicacionRepository;
 
 @Service("predioService")
 public class PredioService {
 	@Autowired
 	@Qualifier("predioRepository")
 	private PredioRepository predioRepository;
+	
+	@Autowired
+	@Qualifier("ubicacionRepository")
+	private UbicacionRepository ubicacionRepository;
+	
 	@Autowired
 	private MessageSource messageSource;
+	
+	
+	public void addInfoList(List<Predio> predios)
+	{
+		predios.stream().map(p->{
+			addInfoObj(p);
+			return p;
+		}).collect(Collectors.toList());
+	}
+	
+	
+	public void addInfoObj(Predio predio)
+	{
+		if(predio.getCoordenadas()!=null || predio.getCoberturas().size()>0)
+		{
+			predio.getCoordenadas().stream().map(c->{
+				if(c.getCordLatitud()==null || c.getCordLongitud()==null)
+				{
+					c.setOrigenLatLong("Parroquia");
+					Optional<Ubicacion> u = ubicacionRepository.findByUbiId(predio.getUbiId());
+					c.setOrigenLatLongUbiId(u.get().getUbiId());
+					c.setOrigenLatLongUbiNombre(u.get().getUbiNombre());
+					c.setCordLongitud(u.get().getUbiLongitud().toString());
+					c.setCordLatitud(u.get().getUbiLatitud().toString());
+				}
+				else
+				{
+					c.setOrigenLatLong("Predio");
+				}
+				return c;
+			}).collect(Collectors.toList());
+		}
+		
+	}
+	
+	
+	
 
 	/**
 	 * Funcion findAll para Predios
@@ -39,6 +83,9 @@ public class PredioService {
 		predios = (List<Predio>) predios.stream().map(predio -> {
 			return predio;
 		}).collect(Collectors.toList());
+		
+		addInfoList(predios);
+		
 		return predios;
 
 	}
@@ -55,6 +102,10 @@ public class PredioService {
 			throw new PredioNotFoundException(String.format(messageSource.getMessage(
 					"error.entity_not_exist_find_one.message", null, LocaleContextHolder.getLocale()), preId));
 		// "Entity with id "+id+" not exists!");
+		
+		
+		addInfoObj(predio.get());
+		
 		return predio;
 	}
 
@@ -74,6 +125,9 @@ public class PredioService {
 			predio.setAreaCultivos(null);
 			return predio;
 		}).collect(Collectors.toList());
+		
+		addInfoList(predios);
+		
 		return predios;
 	}
 
@@ -87,6 +141,9 @@ public class PredioService {
 			predio.setAreaCultivos(null);
 			return predio;
 		}).collect(Collectors.toList());
+		
+		addInfoList(predios);
+		
 		return predios;
 	}
 
@@ -114,6 +171,9 @@ public class PredioService {
 			predio.setAreaCultivos(null);
 			return predio;
 		}).collect(Collectors.toList());
+		
+		addInfoList(predios);
+		
 		return predios;
 	}
 

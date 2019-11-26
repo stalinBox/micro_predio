@@ -15,6 +15,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -137,14 +139,34 @@ public class Coordenada implements Serializable {
 	@JsonProperty("cordActFecha")
 	@JsonInclude(Include.NON_NULL)
 	private Date cordActFecha;
+	
+	//campos para determinar la longitud y latitud del predio o parroquia donde esta el predio
+	@Transient
+	@ApiModelProperty(value = "Origen de Latitud y Longitud", position = 14)
+	@JsonProperty("origenLatLong")
+	@JsonInclude(Include.NON_NULL)
+	private String origenLatLong;
+	
+	@Transient
+	@ApiModelProperty(value = "Origen de Latitud y Longitud Parroquia Id", position = 15)
+	@JsonProperty("origenLatLongUbiId")
+	@JsonInclude(Include.NON_NULL)
+	private Long origenLatLongUbiId;
+	
+	@Transient
+	@ApiModelProperty(value = "Origen de Latitud y Longitud Parroquia Nombre", position = 16)
+	@JsonProperty("origenLatLongUbiNombre")
+	@JsonInclude(Include.NON_NULL)
+	private String origenLatLongUbiNombre;
+	
 
-	@ApiModelProperty(value = "Latitud geografica", position = 14)
+	@ApiModelProperty(value = "Latitud geografica", position = 17)
 	@Column(name = "cord_latitud", length = 32)
 	@JsonProperty("cordLatitud")
 	@JsonInclude(Include.NON_NULL)
 	private String cordLatitud;
 
-	@ApiModelProperty(value = "Longitud geografica", position = 15)
+	@ApiModelProperty(value = "Longitud geografica", position = 18)
 	@Column(name = "cord_longitud", length = 32)
 	@JsonProperty("cordLongitud")
 	@JsonInclude(Include.NON_NULL)
