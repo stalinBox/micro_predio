@@ -1,25 +1,13 @@
 package ec.gob.mag.rna.predio.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -63,7 +51,6 @@ public class Ubicacion implements Serializable {
 	@JsonProperty("ubiId")
 	private Long ubiId;
 
-
 	@ApiModelProperty(value = " ***", position = 3)
 	@JsonInclude(Include.NON_NULL)
 	@Column(name = "cat_id_ubicacion")
@@ -75,7 +62,7 @@ public class Ubicacion implements Serializable {
 	@Column(name = "ubi_nombre")
 	@JsonProperty("ubiNombre")
 	private String ubiNombre;
-	
+
 	@ApiModelProperty(value = " ***", position = 12)
 	@JsonInclude(Include.NON_NULL)
 	@Column(name = "ubi_estado")
@@ -94,30 +81,4 @@ public class Ubicacion implements Serializable {
 	@JsonProperty("ubiLongitud")
 	private Float ubiLongitud;
 
-	/*
-	@ApiModelProperty(value = " ***", position = 20)
-	@JsonInclude(Include.NON_NULL)
-	@Column(name = "ubi_superficie")
-	@JsonProperty("ubiSuperficie")
-	private Float ubiSuperficie;
-
-	@ApiModelProperty(value = " ***", position = 21)
-	@JsonInclude(Include.NON_NULL)
-	@Column(name = "ubi_longitud_min")
-	@JsonProperty("ubiLongitudMin")
-	private Float ubiLongitudMin;
-
-	@ApiModelProperty(value = " ***", position = 22)
-	@JsonInclude(Include.NON_NULL)
-	@Column(name = "ubi_longitud_max")
-	@JsonProperty("ubiLongitudMax")
-	private Float ubiLongitudMax;
-
-
-	@ApiModelProperty(value = " ***", position = 32)
-	@JsonInclude(Include.NON_NULL)
-	@Column(name = "ubi_latitud_min")
-	@JsonProperty("ubiLatitudMin")
-	private Float ubiLatitudMin;
-*/
 }

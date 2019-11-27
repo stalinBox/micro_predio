@@ -2,7 +2,6 @@ package ec.gob.mag.rna.predio.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,7 +20,6 @@ import ec.gob.mag.rna.predio.repository.UbicacionRepository;
  * @version final
  */
 
-
 @Service("ubicacionService")
 public class UbicacionService {
 	@Autowired
@@ -30,9 +28,8 @@ public class UbicacionService {
 	@Autowired
 	private MessageSource messageSource;
 
-	
 	/**
-	 * Devuelve todas las ubicaciones  
+	 * Devuelve todas las ubicaciones
 	 *
 	 * @return List<Ubicacion>
 	 */
@@ -46,7 +43,6 @@ public class UbicacionService {
 		return ubicaciones;
 	}
 
-	
 	/**
 	 * Busca una Ubicación por ubiId
 	 *
