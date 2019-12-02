@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -39,7 +40,8 @@ public class PredioController {
 	@RequestMapping(value = "/predio/create", method = RequestMethod.POST)
 	@ApiOperation(value = "Crea un nuevo predio", response = ResponseUpdate.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseUpdate createPredio(@Valid @RequestBody Predio predio) {
+	public ResponseUpdate createPredio(@Valid @RequestBody Predio predio,
+			@RequestHeader(name = "Authorization") String token) {
 		Predio predioR = predioService.save(predio);
 		LOGGER.info("createPredio: " + predioR.toString());
 		return new ResponseUpdate("predio", predioR.getPreId());
@@ -48,7 +50,7 @@ public class PredioController {
 	@RequestMapping(value = "/predio/find", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca todos los predios", response = Predio.class)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Predio> getPredios() {
+	public List<Predio> getPredios(@RequestHeader(name = "Authorization") String token) {
 		List<Predio> predios = (List<Predio>) predioService.findAll();
 		LOGGER.info("getPredios: " + predios.toString());
 		return predios;
@@ -57,7 +59,8 @@ public class PredioController {
 	@RequestMapping(value = "/predio/findById/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca predio por su Id", response = Predio.class)
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Predio> getPredioById(@Valid @PathVariable String id) {
+	public Optional<Predio> getPredioById(@Valid @PathVariable String id,
+			@RequestHeader(name = "Authorization") String token) {
 		Optional<Predio> predio = predioService.findByPreId(Long.parseLong(id));
 		LOGGER.info("getPredioById: " + predio.toString());
 		return predio;
@@ -71,8 +74,7 @@ public class PredioController {
 		LOGGER.info("getPredioByPetyId: " + predios.toString());
 		return predios;
 	}
-	
-	
+
 	@RequestMapping(value = "/predio/findOrgId/{orgId}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca un predio por Organizacion Id", response = Predio.class)
 	@ResponseStatus(HttpStatus.OK)
@@ -81,8 +83,6 @@ public class PredioController {
 		LOGGER.info("getPredioByOrgId: " + predios.toString());
 		return predios;
 	}
-	
-	
 
 	@RequestMapping(value = "/predio/countByPetiId/{petiIid}", method = RequestMethod.GET)
 	@ApiOperation(value = "Cuenta numero predio por el id de Persona Tipo", response = ResponseOperations.class)

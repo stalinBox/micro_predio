@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -37,7 +38,8 @@ public class CoberturaController {
 	@RequestMapping(value = "/create_cobertura", method = RequestMethod.POST)
 	@ApiOperation(value = "Crea una nueva cobertura", response = Long.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Long createCobertura(@Valid @RequestBody Cobertura cobertura) {
+	public Long createCobertura(@Valid @RequestBody Cobertura cobertura,
+			@RequestHeader(name = "Authorization") String token) {
 		Cobertura coberturaR = coberturaService.save(cobertura);
 		LOGGER.info("createCobertura: " + coberturaR.toString());
 		return coberturaR.getCobId();
@@ -46,7 +48,7 @@ public class CoberturaController {
 	@RequestMapping(value = "/cobertura/find", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca todas las coberturas", response = Cobertura.class)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Cobertura> getCoberturas() {
+	public List<Cobertura> getCoberturas(@RequestHeader(name = "Authorization") String token) {
 		List<Cobertura> listCoberturas = (List<Cobertura>) coberturaService.findAll();
 		LOGGER.info("getCoberturas: " + listCoberturas.toString());
 		return listCoberturas;
@@ -56,7 +58,8 @@ public class CoberturaController {
 	@RequestMapping(value = "/cobertura/find/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca una cobertura por id", response = Cobertura.class)
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Cobertura> getCoberturaById(@Valid @PathVariable String id) {
+	public Optional<Cobertura> getCoberturaById(@Valid @PathVariable String id,
+			@RequestHeader(name = "Authorization") String token) {
 		Optional<Cobertura> cobertura = coberturaService.findByCobId(Long.parseLong(id));
 		LOGGER.info("getCoberturaById: " + cobertura.toString());
 		return cobertura;

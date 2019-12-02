@@ -9,6 +9,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -39,7 +40,8 @@ public class AreaCultivoController implements ErrorController {
 	@RequestMapping(value = "/create_area_cultivo", method = RequestMethod.POST)
 	@ApiOperation(value = "Insert areaCultivo", response = Long.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Long createAreaCultivo(@Valid @RequestBody AreaCultivo areaCultivo) {
+	public Long createAreaCultivo(@Valid @RequestBody AreaCultivo areaCultivo,
+			@RequestHeader(name = "Authorization") String token) {
 		AreaCultivo areaCultivoR = areaCultivoService.save(areaCultivo);
 		LOGGER.info("AreaCultivo Save: " + areaCultivoR.toString());
 		return areaCultivo.getAcId();
@@ -48,7 +50,7 @@ public class AreaCultivoController implements ErrorController {
 	@RequestMapping(value = "/areaCultivo/find", method = RequestMethod.GET)
 	@ApiOperation(value = "Get all areaCultivos", response = AreaCultivo.class)
 	@ResponseStatus(HttpStatus.OK)
-	public List<AreaCultivo> getAreaCultivos() {
+	public List<AreaCultivo> getAreaCultivos(@RequestHeader(name = "Authorization") String token) {
 		List<AreaCultivo> listAreaCultivos = (List<AreaCultivo>) areaCultivoService.findAll();
 		LOGGER.info("Find All: " + listAreaCultivos.toString());
 		return listAreaCultivos;
@@ -58,7 +60,8 @@ public class AreaCultivoController implements ErrorController {
 	@RequestMapping(value = "/areaCultivo/find/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get AreaCultivo by id", response = AreaCultivo.class)
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<AreaCultivo> getAreaCultivo(@Valid @PathVariable String id) {
+	public Optional<AreaCultivo> getAreaCultivo(@Valid @PathVariable String id,
+			@RequestHeader(name = "Authorization") String token) {
 		Optional<AreaCultivo> areaCultivo = areaCultivoService.findByAcId(Long.parseLong(id));
 		LOGGER.info("Find All: " + areaCultivo.toString());
 		return areaCultivo;

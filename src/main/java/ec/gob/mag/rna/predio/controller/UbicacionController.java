@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -36,7 +37,7 @@ public class UbicacionController implements ErrorController {
 	@RequestMapping(value = "/ubicacion/findByUbiId/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Obtiene los datos de la ubicacion y de todos sus ubicaciones padre por id", response = Ubicacion.class)
 	@ResponseStatus(HttpStatus.OK)
-	public Ubicacion getUbicacion(@PathVariable Long id) {
+	public Ubicacion getUbicacion(@PathVariable Long id, @RequestHeader(name = "Authorization") String token) {
 		Ubicacion ubicaciones = ubicacionService.findByUbiId(id);
 		return ubicaciones;
 	}
