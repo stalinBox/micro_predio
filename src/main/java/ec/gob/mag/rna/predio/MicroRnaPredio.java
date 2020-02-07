@@ -28,11 +28,4 @@ public class MicroRnaPredio extends SpringBootServletInitializer {
 
 	private static Class<MicroRnaPredio> applicationClass = MicroRnaPredio.class;
 
-	@Bean
-	public ResourceBundleMessageSource messageSource() {
-		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-		messageSource.setBasename("messages");
-		return messageSource;
-	}
-
 }
