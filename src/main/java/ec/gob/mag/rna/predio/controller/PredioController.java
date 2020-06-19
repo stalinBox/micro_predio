@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import io.swagger.annotations.ApiResponse;
 
 @RestController
-//@RequestMapping("/predio")
 @Api(value = "MicroservicioPredio", description = "Rest Api example", tags = "PREDIO")
 @ApiResponses(value = { @ApiResponse(code = 200, message = "Objeto recuperado"),
 		@ApiResponse(code = 201, message = "Objeto creado"),
