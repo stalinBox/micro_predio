@@ -43,7 +43,7 @@ public class PredioController {
 			@RequestHeader(name = "Authorization") String token) {
 		Predio predioR = predioService.save(predio);
 		LOGGER.info("createPredio: " + predioR.toString());
-		return new ResponseUpdate("predio", predioR.getPreId());
+		return new ResponseUpdate("PREDIO", predioR.getPreId());
 	}
 
 	@RequestMapping(value = "/predio/find", method = RequestMethod.GET)

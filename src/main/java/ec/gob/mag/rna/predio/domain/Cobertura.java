@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -47,7 +48,7 @@ import lombok.ToString;
 
 public class Cobertura implements Serializable {
 
-	private static final long serialVersionUID = -1383240679545632350L;
+	private static final long serialVersionUID = 1L;
 
 	@ApiModelProperty(value = "Este campo es  la clave primaria de la tabla cobertura", position = 1)
 	@Id
@@ -123,9 +124,13 @@ public class Cobertura implements Serializable {
 
 	@PrePersist
 	public void prePersist() {
-		this.cobEstado = 11L;
-		this.cobActFecha = null;
-		this.cobActUsu = null;
+		this.cobEstado = (long) 11;
 		this.cobEliminado = false;
+		this.cobRegFecha = new Date();
+	}
+
+	@PreUpdate
+	void preUpdate() {
+		this.cobActFecha = new Date();
 	}
 }

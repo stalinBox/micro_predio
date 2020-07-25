@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -139,26 +140,24 @@ public class Coordenada implements Serializable {
 	@JsonProperty("cordActFecha")
 	@JsonInclude(Include.NON_NULL)
 	private Date cordActFecha;
-	
-	//campos para determinar la longitud y latitud del predio o parroquia donde esta el predio
+
 	@Transient
 	@ApiModelProperty(value = "Origen de Latitud y Longitud", position = 14)
 	@JsonProperty("origenLatLong")
 	@JsonInclude(Include.NON_NULL)
 	private String origenLatLong;
-	
+
 	@Transient
 	@ApiModelProperty(value = "Origen de Latitud y Longitud Parroquia Id", position = 15)
 	@JsonProperty("origenLatLongUbiId")
 	@JsonInclude(Include.NON_NULL)
 	private Long origenLatLongUbiId;
-	
+
 	@Transient
 	@ApiModelProperty(value = "Origen de Latitud y Longitud Parroquia Nombre", position = 16)
 	@JsonProperty("origenLatLongUbiNombre")
 	@JsonInclude(Include.NON_NULL)
 	private String origenLatLongUbiNombre;
-	
 
 	@ApiModelProperty(value = "Latitud geografica", position = 17)
 	@Column(name = "cord_latitud", length = 32)
@@ -174,10 +173,13 @@ public class Coordenada implements Serializable {
 
 	@PrePersist
 	public void prePersist() {
-		this.cordEstado = 11L;
-		this.cordActFecha = null;
-		this.cordActUsu = null;
+		this.cordEstado = (long) 11;
 		this.cordEliminado = false;
+		this.cordRegFecha = new Date();
 	}
 
+	@PreUpdate
+	void preUpdate() {
+		this.cordActFecha = new Date();
+	}
 }

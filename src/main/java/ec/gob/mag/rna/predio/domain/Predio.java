@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -358,10 +359,14 @@ public class Predio implements java.io.Serializable {
 
 	@PrePersist
 	public void prePersist() {
-		this.preEstado = 11L;
-		this.preActFecha = null;
-		this.preActUsu = null;
+		this.preEstado = (long) 11;
 		this.preEliminado = false;
+		this.preActFecha = new Date();
+	}
+
+	@PreUpdate
+	void preUpdate() {
+		this.preActFecha = new Date();
 	}
 
 }
