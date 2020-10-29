@@ -321,17 +321,35 @@ public class Predio implements java.io.Serializable {
 	@JsonInclude(Include.NON_NULL)
 	private String preDuenioCorreo;
 
-	@ApiModelProperty(value = "Categoria actividad Principal", position = 44)
+	@ApiModelProperty(value = "Categoria actividad Principal")
 	@Column(name = "cat_actividad_principal")
 	@JsonProperty("catActividadPrincipal")
 	@JsonInclude(Include.NON_NULL)
 	private Long catActividadPrincipal;
 
-	@ApiModelProperty(value = "Id de la Organizacion", position = 44)
+	@ApiModelProperty(value = "Id de la Organizacion")
 	@Column(name = "org_id")
 	@JsonProperty("orgId")
 	@JsonInclude(Include.NON_NULL)
 	private Long orgId;
+
+	@ApiModelProperty(value = "Cultivo id agricola")
+	@Column(name = "cul_id_agricola")
+	@JsonProperty("culIdAgricola")
+	@JsonInclude(Include.NON_NULL)
+	private Long culIdAgricola;
+
+	@ApiModelProperty(value = "Id de forestal")
+	@Column(name = "cul_id_forestal")
+	@JsonProperty("culIdForestal")
+	@JsonInclude(Include.NON_NULL)
+	private Long culIdForestal;
+
+	@ApiModelProperty(value = "Id pecuario")
+	@Column(name = "cat_id_pecuario")
+	@JsonProperty("catIdPecuario")
+	@JsonInclude(Include.NON_NULL)
+	private Long catIdPecuario;
 
 	@ApiModelProperty(value = "Este campo es  la clave primaria de la tabla area_cultivo", position = 45)
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "predio", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
