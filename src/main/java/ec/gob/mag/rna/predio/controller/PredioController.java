@@ -1,5 +1,6 @@
 package ec.gob.mag.rna.predio.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
 import ec.gob.mag.rna.predio.domain.Predio;
+import ec.gob.mag.rna.predio.domain.validations.ValidatePredio;
 import ec.gob.mag.rna.predio.dto.ResponseOperations;
 import ec.gob.mag.rna.predio.dto.ResponseUpdate;
 import ec.gob.mag.rna.predio.services.PredioService;
+import ec.gob.mag.rna.predio.util.ConvertEntityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponses;
@@ -36,12 +40,20 @@ public class PredioController {
 	@Qualifier("predioService")
 	private PredioService predioService;
 
+	@Autowired
+	@Qualifier("convertEntityUtil")
+	private ConvertEntityUtil convertEntityUtil;
+
 	@RequestMapping(value = "/predio/create", method = RequestMethod.POST)
 	@ApiOperation(value = "Crea un nuevo predio", response = ResponseUpdate.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseUpdate createPredio(@Valid @RequestBody Predio predio,
-			@RequestHeader(name = "Authorization") String token) {
-		Predio predioR = predioService.save(predio);
+	public Object createPredio(@Valid @RequestBody ValidatePredio predio,
+			@RequestHeader(name = "Authorization") String token) throws NoSuchFieldException, SecurityException,
+			IllegalArgumentException, IllegalAccessException, IOException {
+		Object predioB = predio;
+		Predio predioValidado = convertEntityUtil.ConvertSingleEntityGET(Predio.class, predioB);
+		predioValidado.setPreSuperficeCultivable(predio.getPreSuperficieTotal());
+		Predio predioR = predioService.save(predioValidado);
 		LOGGER.info("createPredio: " + predioR.toString());
 		return new ResponseUpdate("PREDIO", predioR.getPreId());
 	}
