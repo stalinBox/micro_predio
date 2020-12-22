@@ -8,7 +8,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import static org.springframework.util.StringUtils.isEmpty;
 
-public class PredioValidator implements ConstraintValidator<PredioVerificador, Object> {
+public class PredioValidatorIncluyente implements ConstraintValidator<PredioVerificadorIncluyente, Object> {
 
 	private String selected;
 	private String[] required;
@@ -16,7 +16,7 @@ public class PredioValidator implements ConstraintValidator<PredioVerificador, O
 	private String[] values;
 
 	@Override
-	public void initialize(PredioVerificador constraintAnnotation) {
+	public void initialize(PredioVerificadorIncluyente constraintAnnotation) {
 		this.selected = constraintAnnotation.selected();
 		this.required = constraintAnnotation.required();
 		this.message = constraintAnnotation.message();

@@ -28,7 +28,8 @@ import ec.gob.mag.rna.predio.domain.constraints.CedulaVerificador;
 import ec.gob.mag.rna.predio.domain.constraints.OneOfCultivos;
 import ec.gob.mag.rna.predio.domain.constraints.OneOfInteger;
 import ec.gob.mag.rna.predio.domain.constraints.OneOfString;
-import ec.gob.mag.rna.predio.domain.constraints.PredioVerificador;
+import ec.gob.mag.rna.predio.domain.constraints.PredioVerificadorExcluyente;
+import ec.gob.mag.rna.predio.domain.constraints.PredioVerificadorIncluyente;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -50,14 +51,18 @@ import lombok.ToString;
 //========== JPA ======================
 @Entity
 
-@PredioVerificador(selected = "catActividadPrincipal", values = { "873", "874" }, required = { "culIdAgricola" })
-@PredioVerificador(selected = "catActividadPrincipal", values = { "876" }, required = { "culIdForestal" })
-@PredioVerificador(selected = "catActividadPrincipal", values = { "874", "875" }, required = { "catIdPecuario" })
-@PredioVerificador(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioCedula" })
-@PredioVerificador(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioNombres" })
-@PredioVerificador(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioTelefono" })
-@PredioVerificador(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioCelular" })
-@PredioVerificador(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioCorreo" })
+@PredioVerificadorIncluyente(selected = "catActividadPrincipal", values = { "873", }, required = { "culIdAgricola" })
+@PredioVerificadorIncluyente(selected = "catActividadPrincipal", values = { "876" }, required = { "culIdForestal" })
+@PredioVerificadorIncluyente(selected = "catActividadPrincipal", values = { "875" }, required = { "catIdPecuario" })
+
+@PredioVerificadorExcluyente(selected = "catActividadPrincipal", values = { "874" }, required = { "catIdPecuario",
+		"culIdAgricola" })
+
+@PredioVerificadorIncluyente(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioCedula" })
+@PredioVerificadorIncluyente(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioNombres" })
+@PredioVerificadorIncluyente(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioTelefono" })
+@PredioVerificadorIncluyente(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioCelular" })
+@PredioVerificadorIncluyente(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioCorreo" })
 
 public class ValidatePredio {
 
