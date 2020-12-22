@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -68,30 +69,40 @@ public class ValidateCoordenada implements Serializable {
 	@Column(name = "cord_x", length = 32)
 	@JsonProperty("cordX")
 	@JsonInclude(Include.NON_NULL)
+	@NotNull
+	@NotEmpty
 	private String cordX;
 
 	@ApiModelProperty(value = "Coordenada geográfica Y del predio", position = 5)
 	@Column(name = "cord_y", length = 32)
 	@JsonProperty("cordY")
 	@JsonInclude(Include.NON_NULL)
+	@NotNull
+	@NotEmpty
 	private String cordY;
 
 	@ApiModelProperty(value = "Coordenada geográfica Z del predio", position = 6)
 	@Column(name = "cord_z", length = 32)
 	@JsonProperty("cordZ")
 	@JsonInclude(Include.NON_NULL)
+	@NotNull
+	@NotEmpty
 	private String cordZ;
 
 	@ApiModelProperty(value = "Hemisferio Norte/Sur", position = 7)
 	@Column(name = "cord_hemisferio", length = 16)
 	@JsonProperty("cordHemisferio")
 	@JsonInclude(Include.NON_NULL)
+	@NotNull
+	@NotEmpty
 	private String cordHemisferio;
 
 	@ApiModelProperty(value = "Zona 17/18", position = 8)
 	@Column(name = "cord_zona", length = 16)
 	@JsonProperty("cordZona")
 	@JsonInclude(Include.NON_NULL)
+	@NotNull
+	@NotEmpty
 	private String cordZona;
 
 	@ApiModelProperty(value = "11=activo  12=inactivo", position = 9)
@@ -157,12 +168,16 @@ public class ValidateCoordenada implements Serializable {
 	@Column(name = "cord_latitud", length = 32)
 	@JsonProperty("cordLatitud")
 	@JsonInclude(Include.NON_NULL)
+	@NotNull
+	@NotEmpty
 	private String cordLatitud;
 
 	@ApiModelProperty(value = "Longitud geografica", position = 18)
 	@Column(name = "cord_longitud", length = 32)
 	@JsonProperty("cordLongitud")
 	@JsonInclude(Include.NON_NULL)
+	@NotNull
+	@NotEmpty
 	private String cordLongitud;
 
 }

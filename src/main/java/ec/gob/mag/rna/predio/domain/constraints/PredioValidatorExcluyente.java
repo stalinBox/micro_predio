@@ -16,14 +16,14 @@ public class PredioValidatorExcluyente implements ConstraintValidator<PredioVeri
 
 	private String selected;
 	private String[] required;
-	private String message;
+//	private String message;
 	private String[] values;
 
 	@Override
 	public void initialize(PredioVerificadorExcluyente constraintAnnotation) {
 		this.selected = constraintAnnotation.selected();
 		this.required = constraintAnnotation.required();
-		this.message = constraintAnnotation.message();
+//		this.message = constraintAnnotation.message();
 		this.values = constraintAnnotation.values();
 	}
 
