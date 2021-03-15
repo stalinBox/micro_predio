@@ -2,10 +2,10 @@ package ec.gob.mag.rna.predio.controller;
 
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -38,7 +38,7 @@ public class CoberturaController {
 	@RequestMapping(value = "/create_cobertura", method = RequestMethod.POST)
 	@ApiOperation(value = "Crea una nueva cobertura", response = Long.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Long createCobertura(@Valid @RequestBody Cobertura cobertura,
+	public Long createCobertura(@Validated @RequestBody Cobertura cobertura,
 			@RequestHeader(name = "Authorization") String token) {
 		Cobertura coberturaR = coberturaService.save(cobertura);
 		LOGGER.info("createCobertura: " + coberturaR.toString());
@@ -58,7 +58,7 @@ public class CoberturaController {
 	@RequestMapping(value = "/cobertura/find/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca una cobertura por id", response = Cobertura.class)
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Cobertura> getCoberturaById(@Valid @PathVariable String id,
+	public Optional<Cobertura> getCoberturaById(@Validated @PathVariable String id,
 			@RequestHeader(name = "Authorization") String token) {
 		Optional<Cobertura> cobertura = coberturaService.findByCobId(Long.parseLong(id));
 		LOGGER.info("getCoberturaById: " + cobertura.toString());

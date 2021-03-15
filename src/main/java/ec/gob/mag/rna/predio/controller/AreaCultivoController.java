@@ -2,11 +2,11 @@ package ec.gob.mag.rna.predio.controller;
 
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -40,7 +40,7 @@ public class AreaCultivoController implements ErrorController {
 	@RequestMapping(value = "/create_area_cultivo", method = RequestMethod.POST)
 	@ApiOperation(value = "Insert areaCultivo", response = Long.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Long createAreaCultivo(@Valid @RequestBody AreaCultivo areaCultivo,
+	public Long createAreaCultivo(@Validated @RequestBody AreaCultivo areaCultivo,
 			@RequestHeader(name = "Authorization") String token) {
 		AreaCultivo areaCultivoR = areaCultivoService.save(areaCultivo);
 		LOGGER.info("AreaCultivo Save: " + areaCultivoR.toString());
@@ -60,7 +60,7 @@ public class AreaCultivoController implements ErrorController {
 	@RequestMapping(value = "/areaCultivo/find/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Get AreaCultivo by id", response = AreaCultivo.class)
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<AreaCultivo> getAreaCultivo(@Valid @PathVariable String id,
+	public Optional<AreaCultivo> getAreaCultivo(@Validated @PathVariable String id,
 			@RequestHeader(name = "Authorization") String token) {
 		Optional<AreaCultivo> areaCultivo = areaCultivoService.findByAcId(Long.parseLong(id));
 		LOGGER.info("Find All: " + areaCultivo.toString());

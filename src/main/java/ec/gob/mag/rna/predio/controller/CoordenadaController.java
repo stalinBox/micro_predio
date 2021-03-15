@@ -2,10 +2,10 @@ package ec.gob.mag.rna.predio.controller;
 
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -38,7 +38,7 @@ public class CoordenadaController {
 	@RequestMapping(value = "/create_coordenada", method = RequestMethod.POST)
 	@ApiOperation(value = "Insert coordenada", response = Long.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Long createdCoordenada(@Valid @RequestBody Coordenada coordenada,
+	public Long createdCoordenada(@Validated @RequestBody Coordenada coordenada,
 			@RequestHeader(name = "Authorization") String token) {
 		Coordenada coordenadaR = coordenadaService.save(coordenada);
 		LOGGER.info("createdCoordenada: " + coordenadaR.toString());
@@ -57,7 +57,7 @@ public class CoordenadaController {
 	@RequestMapping(value = "/coordenada/find/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca una coordenada por id", response = Coordenada.class)
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Coordenada> getCoordenadaById(@Valid @PathVariable String id,
+	public Optional<Coordenada> getCoordenadaById(@Validated @PathVariable String id,
 			@RequestHeader(name = "Authorization") String token) {
 		Optional<Coordenada> coordenada = coordenadaService.findByCobId(Long.parseLong(id));
 		LOGGER.info("getCoordenadaById: " + coordenada.toString());

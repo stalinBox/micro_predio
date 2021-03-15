@@ -2,7 +2,6 @@ package ec.gob.mag.rna.predio.controller;
 
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
@@ -88,8 +87,8 @@ public class CultivoController implements ErrorController {
 	@PostMapping(value = "/create/{usuId}")
 	@ApiOperation(value = "Crear nuevo registro", response = ResponseController.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<ResponseController> postOfficer(@Valid @PathVariable Long usuId, @RequestBody Cultivo cultivo,
-			@RequestHeader(name = "Authorization") String token) {
+	public ResponseEntity<ResponseController> postOfficer(@Validated @PathVariable Long usuId,
+			@RequestBody Cultivo cultivo, @RequestHeader(name = "Authorization") String token) {
 		cultivo.setCulRegUsu(usuId);
 		Cultivo off = cultivoService.save(cultivo);
 		LOGGER.info("Cultivo Save: " + cultivo);
@@ -107,7 +106,7 @@ public class CultivoController implements ErrorController {
 	@PostMapping(value = "/update/{usuId}")
 	@ApiOperation(value = "Actualizar los registros", response = ResponseController.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<ResponseController> update(@Valid @RequestBody Cultivo updateCultivo,
+	public ResponseEntity<ResponseController> update(@Validated @RequestBody Cultivo updateCultivo,
 			@PathVariable Long usuId, @RequestHeader(name = "Authorization") String token) {
 		updateCultivo.setCulActUsu(usuId);
 		Cultivo off = cultivoService.update(updateCultivo);

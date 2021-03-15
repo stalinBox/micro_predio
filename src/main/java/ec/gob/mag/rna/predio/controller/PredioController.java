@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -47,7 +47,7 @@ public class PredioController {
 	@RequestMapping(value = "/predio/create", method = RequestMethod.POST)
 	@ApiOperation(value = "Crea un nuevo predio", response = ResponseUpdate.class)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Object createPredio(@Valid @RequestBody ValidatePredio predio,
+	public Object createPredio(@Validated @RequestBody ValidatePredio predio,
 			@RequestHeader(name = "Authorization") String token) throws NoSuchFieldException, SecurityException,
 			IllegalArgumentException, IllegalAccessException, IOException {
 		Object predioB = predio;
@@ -70,7 +70,7 @@ public class PredioController {
 	@RequestMapping(value = "/predio/findById/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca predio por su Id", response = Predio.class)
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<Predio> getPredioById(@Valid @PathVariable String id,
+	public Optional<Predio> getPredioById(@Validated @PathVariable String id,
 			@RequestHeader(name = "Authorization") String token) {
 		Optional<Predio> predio = predioService.findByPreId(Long.parseLong(id));
 		LOGGER.info("getPredioById: " + predio.toString());
@@ -80,7 +80,7 @@ public class PredioController {
 	@RequestMapping(value = "/predio/findPetiId/{petiIid}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca un predio por el id de Persona Tipo", response = Predio.class)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Predio> getPredioByPetyId(@Valid @PathVariable String petiIid) {
+	public List<Predio> getPredioByPetyId(@Validated @PathVariable String petiIid) {
 		List<Predio> predios = predioService.findByPetiId(Long.parseLong(petiIid));
 		LOGGER.info("getPredioByPetyId: " + predios.toString());
 		return predios;
@@ -89,7 +89,7 @@ public class PredioController {
 	@RequestMapping(value = "/predio/findOrgId/{orgId}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca un predio por Organizacion Id", response = Predio.class)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Predio> finPredioByOrgId(@Valid @PathVariable String orgId) {
+	public List<Predio> finPredioByOrgId(@Validated @PathVariable String orgId) {
 		List<Predio> predios = predioService.findByOrgId(Long.parseLong(orgId));
 		LOGGER.info("getPredioByOrgId: " + predios.toString());
 		return predios;
@@ -98,7 +98,7 @@ public class PredioController {
 	@RequestMapping(value = "/predio/countByPetiId/{petiIid}", method = RequestMethod.GET)
 	@ApiOperation(value = "Cuenta numero predio por el id de Persona Tipo", response = ResponseOperations.class)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseOperations counPredioByPetyId(@Valid @PathVariable Long petiIid) {
+	public ResponseOperations counPredioByPetyId(@Validated @PathVariable Long petiIid) {
 		Integer numeroPredios = predioService.countByPetiId(petiIid);
 		LOGGER.info("Numero de predios de la Persona Tipo " + petiIid + " : " + numeroPredios.toString());
 		return new ResponseOperations("Count", numeroPredios);
@@ -107,7 +107,7 @@ public class PredioController {
 	@RequestMapping(value = "/predio/findUbiId/{ubiId}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca un predio por el id de Persona Tipo", response = Predio.class)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Predio> getPredioByUbiId(@Valid @PathVariable Long ubiId) {
+	public List<Predio> getPredioByUbiId(@Validated @PathVariable Long ubiId) {
 		List<Predio> predios = predioService.findByUbiId(ubiId);
 		LOGGER.info("getPredioByUbiId: " + predios.toString());
 		return predios;
