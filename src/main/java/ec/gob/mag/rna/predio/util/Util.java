@@ -13,7 +13,9 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
+@Component("util")
 public class Util {
 
 	public static String decodeJWTHeader(String jwtToken) {
