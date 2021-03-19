@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ec.gob.mag.rna.predio.domain.Coordenada;
 import ec.gob.mag.rna.predio.services.CoordenadaService;
+import ec.gob.mag.rna.predio.util.Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponses;
@@ -35,13 +36,17 @@ public class CoordenadaController {
 	@Qualifier("coordenadaService")
 	private CoordenadaService coordenadaService;
 
+	@Autowired
+	@Qualifier("util")
+	private Util util;
+	
 	@RequestMapping(value = "/create_coordenada", method = RequestMethod.POST)
 	@ApiOperation(value = "Insert coordenada", response = Long.class)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Long createdCoordenada(@Validated @RequestBody Coordenada coordenada,
 			@RequestHeader(name = "Authorization") String token) {
 		Coordenada coordenadaR = coordenadaService.save(coordenada);
-		LOGGER.info("createdCoordenada: " + coordenadaR.toString());
+		LOGGER.info("createdCoordenada: " + coordenadaR.toString()+ " usuario: " + util.filterUsuId(token));
 		return coordenadaR.getCordId();
 	}
 
@@ -50,7 +55,7 @@ public class CoordenadaController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<Coordenada> getCoordenadas(@RequestHeader(name = "Authorization") String token) {
 		List<Coordenada> listCoordenadas = coordenadaService.findAll();
-		LOGGER.info("getCoordenadas: " + listCoordenadas.toString());
+		LOGGER.info("getCoordenadas: " + listCoordenadas.toString()+ " usuario: " + util.filterUsuId(token));
 		return listCoordenadas;
 	}
 
@@ -60,7 +65,7 @@ public class CoordenadaController {
 	public Optional<Coordenada> getCoordenadaById(@Validated @PathVariable String id,
 			@RequestHeader(name = "Authorization") String token) {
 		Optional<Coordenada> coordenada = coordenadaService.findByCobId(Long.parseLong(id));
-		LOGGER.info("getCoordenadaById: " + coordenada.toString());
+		LOGGER.info("getCoordenadaById: " + coordenada.toString()+ " usuario: " + util.filterUsuId(token));
 		return coordenada;
 
 	}

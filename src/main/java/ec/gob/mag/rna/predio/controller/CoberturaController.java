@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ec.gob.mag.rna.predio.domain.Cobertura;
 import ec.gob.mag.rna.predio.services.CoberturaService;
+import ec.gob.mag.rna.predio.util.Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponses;
@@ -31,17 +32,22 @@ import io.swagger.annotations.ApiResponse;
 public class CoberturaController {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(CoberturaController.class);
+	
 	@Autowired
 	@Qualifier("coberturaService")
 	private CoberturaService coberturaService;
 
+	@Autowired
+	@Qualifier("util")
+	private Util util;
+	
 	@RequestMapping(value = "/create_cobertura", method = RequestMethod.POST)
 	@ApiOperation(value = "Crea una nueva cobertura", response = Long.class)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Long createCobertura(@Validated @RequestBody Cobertura cobertura,
 			@RequestHeader(name = "Authorization") String token) {
 		Cobertura coberturaR = coberturaService.save(cobertura);
-		LOGGER.info("createCobertura: " + coberturaR.toString());
+		LOGGER.info("createCobertura: " + coberturaR.toString()+ " usuario: " + util.filterUsuId(token));
 		return coberturaR.getCobId();
 	}
 
@@ -50,7 +56,7 @@ public class CoberturaController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<Cobertura> getCoberturas(@RequestHeader(name = "Authorization") String token) {
 		List<Cobertura> listCoberturas = (List<Cobertura>) coberturaService.findAll();
-		LOGGER.info("getCoberturas: " + listCoberturas.toString());
+		LOGGER.info("getCoberturas: " + listCoberturas.toString()+ " usuario: " + util.filterUsuId(token));
 		return listCoberturas;
 
 	}
@@ -61,7 +67,7 @@ public class CoberturaController {
 	public Optional<Cobertura> getCoberturaById(@Validated @PathVariable String id,
 			@RequestHeader(name = "Authorization") String token) {
 		Optional<Cobertura> cobertura = coberturaService.findByCobId(Long.parseLong(id));
-		LOGGER.info("getCoberturaById: " + cobertura.toString());
+		LOGGER.info("getCoberturaById: " + cobertura.toString()+ " usuario: " + util.filterUsuId(token));
 		return cobertura;
 
 	}

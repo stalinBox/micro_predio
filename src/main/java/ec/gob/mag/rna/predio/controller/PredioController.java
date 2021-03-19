@@ -22,6 +22,7 @@ import ec.gob.mag.rna.predio.dto.ResponseOperations;
 import ec.gob.mag.rna.predio.dto.ResponseUpdate;
 import ec.gob.mag.rna.predio.services.PredioService;
 import ec.gob.mag.rna.predio.util.ConvertEntityUtil;
+import ec.gob.mag.rna.predio.util.Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponses;
@@ -44,6 +45,10 @@ public class PredioController {
 	@Qualifier("convertEntityUtil")
 	private ConvertEntityUtil convertEntityUtil;
 
+	@Autowired
+	@Qualifier("util")
+	private Util util;
+
 	@RequestMapping(value = "/predio/create", method = RequestMethod.POST)
 	@ApiOperation(value = "Crea un nuevo predio", response = ResponseUpdate.class)
 	@ResponseStatus(HttpStatus.CREATED)
@@ -54,7 +59,7 @@ public class PredioController {
 		Predio predioValidado = convertEntityUtil.ConvertSingleEntityGET(Predio.class, predioB);
 		predioValidado.setPreSuperficeCultivable(predio.getPreSuperficieTotal());
 		Predio predioR = predioService.save(predioValidado);
-		LOGGER.info("createPredio: " + predioR.toString());
+		LOGGER.info("createPredio: " + predioR.toString() + " usuario: " + util.filterUsuId(token));
 		return new ResponseUpdate("PREDIO", predioR.getPreId());
 	}
 
@@ -63,7 +68,7 @@ public class PredioController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<Predio> getPredios(@RequestHeader(name = "Authorization") String token) {
 		List<Predio> predios = (List<Predio>) predioService.findAll();
-		LOGGER.info("getPredios: " + predios.toString());
+		LOGGER.info("getPredios: " + predios.toString() + " usuario: " + util.filterUsuId(token));
 		return predios;
 	}
 
@@ -73,43 +78,48 @@ public class PredioController {
 	public Optional<Predio> getPredioById(@Validated @PathVariable String id,
 			@RequestHeader(name = "Authorization") String token) {
 		Optional<Predio> predio = predioService.findByPreId(Long.parseLong(id));
-		LOGGER.info("getPredioById: " + predio.toString());
+		LOGGER.info("getPredioById: " + predio.toString() + " usuario: " + util.filterUsuId(token));
 		return predio;
 	}
 
 	@RequestMapping(value = "/predio/findPetiId/{petiIid}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca un predio por el id de Persona Tipo", response = Predio.class)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Predio> getPredioByPetyId(@Validated @PathVariable String petiIid) {
+	public List<Predio> getPredioByPetyId(@Validated @PathVariable String petiIid,
+			@RequestHeader(name = "Authorization") String token) {
 		List<Predio> predios = predioService.findByPetiId(Long.parseLong(petiIid));
-		LOGGER.info("getPredioByPetyId: " + predios.toString());
+		LOGGER.info("getPredioByPetyId: " + predios.toString() + " usuario: " + util.filterUsuId(token));
 		return predios;
 	}
 
 	@RequestMapping(value = "/predio/findOrgId/{orgId}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca un predio por Organizacion Id", response = Predio.class)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Predio> finPredioByOrgId(@Validated @PathVariable String orgId) {
+	public List<Predio> finPredioByOrgId(@Validated @PathVariable String orgId,
+			@RequestHeader(name = "Authorization") String token) {
 		List<Predio> predios = predioService.findByOrgId(Long.parseLong(orgId));
-		LOGGER.info("getPredioByOrgId: " + predios.toString());
+		LOGGER.info("getPredioByOrgId: " + predios.toString() + " usuario: " + util.filterUsuId(token));
 		return predios;
 	}
 
 	@RequestMapping(value = "/predio/countByPetiId/{petiIid}", method = RequestMethod.GET)
 	@ApiOperation(value = "Cuenta numero predio por el id de Persona Tipo", response = ResponseOperations.class)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseOperations counPredioByPetyId(@Validated @PathVariable Long petiIid) {
+	public ResponseOperations counPredioByPetyId(@Validated @PathVariable Long petiIid,
+			@RequestHeader(name = "Authorization") String token) {
 		Integer numeroPredios = predioService.countByPetiId(petiIid);
-		LOGGER.info("Numero de predios de la Persona Tipo " + petiIid + " : " + numeroPredios.toString());
+		LOGGER.info("Numero de predios de la Persona Tipo " + petiIid + " : " + numeroPredios.toString() + " usuario: "
+				+ util.filterUsuId(token));
 		return new ResponseOperations("Count", numeroPredios);
 	}
 
 	@RequestMapping(value = "/predio/findUbiId/{ubiId}", method = RequestMethod.GET)
 	@ApiOperation(value = "Busca un predio por el id de Persona Tipo", response = Predio.class)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Predio> getPredioByUbiId(@Validated @PathVariable Long ubiId) {
+	public List<Predio> getPredioByUbiId(@Validated @PathVariable Long ubiId,
+			@RequestHeader(name = "Authorization") String token) {
 		List<Predio> predios = predioService.findByUbiId(ubiId);
-		LOGGER.info("getPredioByUbiId: " + predios.toString());
+		LOGGER.info("getPredioByUbiId: " + predios.toString() + " usuario: " + util.filterUsuId(token));
 		return predios;
 	}
 }

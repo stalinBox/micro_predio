@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ec.gob.mag.rna.predio.domain.Cultivo;
 import ec.gob.mag.rna.predio.services.CultivoService;
 import ec.gob.mag.rna.predio.util.ResponseController;
+import ec.gob.mag.rna.predio.util.Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponses;
@@ -46,6 +47,10 @@ public class CultivoController implements ErrorController {
 	@Qualifier("responseController")
 	private ResponseController responseController;
 
+	@Autowired
+	@Qualifier("util")
+	private Util util;
+
 	/**
 	 * Busca todos los registros de la entidad
 	 * 
@@ -56,9 +61,9 @@ public class CultivoController implements ErrorController {
 	@GetMapping(value = "/findAll")
 	@ApiOperation(value = "Obtiene todos los registros activos no eliminados logicamente", response = Cultivo.class)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<List<Cultivo>> findAll() {
+	public ResponseEntity<List<Cultivo>> findAll(@RequestHeader(name = "Authorization") String token) {
 		List<Cultivo> cultivo = cultivoService.findAll();
-		LOGGER.info("Find All: " + cultivo.toString());
+		LOGGER.info("Find All: " + cultivo.toString() + " usuario: " + util.filterUsuId(token));
 		return ResponseEntity.ok(cultivo);
 	}
 
@@ -74,7 +79,7 @@ public class CultivoController implements ErrorController {
 	public ResponseEntity<Optional<Cultivo>> findById(@Validated @PathVariable Long id,
 			@RequestHeader(name = "Authorization") String token) {
 		Optional<Cultivo> cultivo = cultivoService.findById(id);
-		LOGGER.info("Find By Id: " + cultivo.toString());
+		LOGGER.info("Find By Id: " + cultivo.toString() + " usuario: " + util.filterUsuId(token));
 		return ResponseEntity.ok(cultivo);
 	}
 
@@ -91,7 +96,7 @@ public class CultivoController implements ErrorController {
 			@RequestBody Cultivo cultivo, @RequestHeader(name = "Authorization") String token) {
 		cultivo.setCulRegUsu(usuId);
 		Cultivo off = cultivoService.save(cultivo);
-		LOGGER.info("Cultivo Save: " + cultivo);
+		LOGGER.info("Cultivo Save: " + cultivo + " usuario: " + util.filterUsuId(token));
 		return ResponseEntity.ok(new ResponseController(off.getId(), "Creado"));
 	}
 
@@ -110,7 +115,7 @@ public class CultivoController implements ErrorController {
 			@PathVariable Long usuId, @RequestHeader(name = "Authorization") String token) {
 		updateCultivo.setCulActUsu(usuId);
 		Cultivo off = cultivoService.update(updateCultivo);
-		LOGGER.info("Update: " + off + " update by: " + usuId);
+		LOGGER.info("Update: " + off + " usuario: " + usuId);
 		return ResponseEntity.ok(new ResponseController(off.getId(), "Actualizado"));
 	}
 
@@ -131,7 +136,7 @@ public class CultivoController implements ErrorController {
 		deleteCultivo.setCulEliminado(true);
 		deleteCultivo.setCulActUsu(usuId);
 		Cultivo officerDel = cultivoService.save(deleteCultivo);
-		LOGGER.info("Delete Cultivo id: " + id + " delete by: " + usuId);
+		LOGGER.info("Delete Cultivo id: " + id + " usuario: " + usuId);
 		return ResponseEntity.ok(new ResponseController(officerDel.getId(), "eliminado"));
 	}
 
