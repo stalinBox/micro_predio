@@ -51,11 +51,11 @@ import lombok.ToString;
 //========== JPA ======================
 @Entity
 
-@PredioVerificadorIncluyente(selected = "catActividadPrincipal", values = { "873", }, required = { "culIdAgricola" })
-@PredioVerificadorIncluyente(selected = "catActividadPrincipal", values = { "876" }, required = { "culIdForestal" })
-@PredioVerificadorIncluyente(selected = "catActividadPrincipal", values = { "875" }, required = { "catIdPecuario" })
+@PredioVerificadorIncluyente(selected = "catActividadPrincipal", values = { "1119", }, required = { "culIdAgricola" })
+@PredioVerificadorIncluyente(selected = "catActividadPrincipal", values = { "1122" }, required = { "culIdForestal" })
+@PredioVerificadorIncluyente(selected = "catActividadPrincipal", values = { "1121" }, required = { "catIdPecuario" })
 
-@PredioVerificadorExcluyente(selected = "catActividadPrincipal", values = { "874" }, required = { "catIdPecuario",
+@PredioVerificadorExcluyente(selected = "catActividadPrincipal", values = { "1121" }, required = { "catIdPecuario",
 		"culIdAgricola" })
 
 @PredioVerificadorIncluyente(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioCedula" })
@@ -150,7 +150,7 @@ public class ValidatePredio {
 	@JsonProperty("catActividadPrincipal")
 	@JsonInclude(Include.NON_NULL)
 	@NotNull(message = "_error.validation_blank.message")
-	@OneOfInteger(required = false, value = { 873, 874, 875, 876 }, domainShow = "[873,874,875,876]")
+	@OneOfInteger(required = false, value = { 1119, 1120, 1121, 1122 }, domainShow = "[1119, 1120, 1121, 1122]")
 	private Integer catActividadPrincipal;
 
 	@ApiModelProperty(value = "Cultivo id agricola")
@@ -160,16 +160,15 @@ public class ValidatePredio {
 
 	@ApiModelProperty(value = "Id de forestal")
 	@JsonProperty("culIdForestal")
-	@OneOfInteger(required = false, value = { 991, 992, 993, 994, 995, 996, 997, 998, 999, 1000, 1001, 1002, 1003, 1004,
-			1005, 1006, 1007,
-			2790 }, domainShow = "[991, 992, 993, 994, 995, 996, 997, 998, 999, 1000, 1001,1002, 1003, 1004, 1005, 1006, 1007, 2790]")
+	@OneOfInteger(required = false, value = { 102, 103, 104, 135, 146, 175, 18, 186, 193, 211, 248, 273, 40, 63, 80, 82,
+			92 }, domainShow = "[102, 103, 104, 135, 146, 175, 18, 186, 193, 211, 248, 273, 40, 63, 80, 82, 92]")
 	private Integer culIdForestal;
 
 	@ApiModelProperty(value = "Id pecuario")
 	@JsonProperty("catIdPecuario")
-	@OneOfInteger(required = false, value = { 869, 849, 850, 851, 852, 853, 854, 855, 856, 857, 858, 859, 860, 861, 863,
-			862, 1132,
-			1133 }, domainShow = "[869, 849, 850, 851, 852, 853, 854, 855, 856, 857, 858,859, 860, 861, 863, 862, 1132, 1133]")
+	@OneOfInteger(required = false, value = { 1132, 1133, 849, 850, 851, 852, 853, 854, 855, 856, 857, 858, 859, 860,
+			861, 862, 863,
+			869 }, domainShow = "[1132, 1133, 849, 850, 851, 852, 853, 854, 855, 856, 857, 858, 859, 860, 861, 862, 863, 869]")
 	private Integer catIdPecuario;
 
 	@ApiModelProperty(value = "Conoce coordenadas del predio")
