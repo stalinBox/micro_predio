@@ -55,7 +55,7 @@ import lombok.ToString;
 @PredioVerificadorIncluyente(selected = "catActividadPrincipal", values = { "1122" }, required = { "culIdForestal" })
 @PredioVerificadorIncluyente(selected = "catActividadPrincipal", values = { "1121" }, required = { "catIdPecuario" })
 
-@PredioVerificadorExcluyente(selected = "catActividadPrincipal", values = { "1121" }, required = { "catIdPecuario",
+@PredioVerificadorExcluyente(selected = "catActividadPrincipal", values = { "1120" }, required = { "catIdPecuario",
 		"culIdAgricola" })
 
 @PredioVerificadorIncluyente(selected = "catIdProArren", values = { "510", "511" }, required = { "preDuenioCedula" })
